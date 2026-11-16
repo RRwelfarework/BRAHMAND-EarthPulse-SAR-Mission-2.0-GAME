@@ -1,0 +1,256 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="BRAHMAND EarthPulse SAR Mission 2.0 - Interactive satellite radar flood rescue training game.">
+    <title>BRAHMAND EarthPulse | SAR Mission 2.0</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<header class="topbar">
+    <div class="brand">
+        <div class="brand-icon">B</div>
+        <div>
+            <h1>BRAHMAND <span>EarthPulse</span></h1>
+            <p>EARTH OBSERVATION & DISASTER INTELLIGENCE</p>
+        </div>
+    </div>
+    <div class="header-actions">
+        <button id="audioToggle" class="audio-toggle" type="button" aria-pressed="true">
+            ♪ SOUND ON
+        </button>
+        <button id="voiceToggle" class="audio-toggle" type="button" aria-pressed="true">
+            VOICE ON
+        </button>
+        <div class="system-status">
+            <span class="status-dot"></span> SIMULATION SYSTEM ONLINE
+        </div>
+    </div>
+</header>
+
+<main class="container">
+
+    <section class="hero">
+        <div>
+            <p class="eyebrow">INTERACTIVE EARTH OBSERVATION SIMULATOR</p>
+            <h2>SAR MISSION <span>2.0</span></h2>
+            <p class="hero-description">
+                Analyse radar observations, identify potential flood zones,
+                and coordinate disaster rescue missions.
+            </p>
+        </div>
+        <div class="mission-symbol">⌁</div>
+    </section>
+
+    <section class="stats-grid">
+        <div class="stat-card">
+            <p>EIP SCORE</p>
+            <h3 id="score">0</h3>
+        </div>
+        <div class="stat-card">
+            <p>TIME LEFT</p>
+            <h3 id="time">120s</h3>
+        </div>
+        <div class="stat-card">
+            <p>RESCUE UNITS</p>
+            <h3 id="units">5</h3>
+        </div>
+        <div class="stat-card">
+            <p>SECTORS DONE</p>
+            <h3 id="completed">0/36</h3>
+        </div>
+    </section>
+
+    <section class="panel setup-panel">
+        <div class="section-heading">
+            <span>01</span>
+            <h3>Mission Configuration</h3>
+        </div>
+
+        <div class="setup-grid">
+            <div>
+                <label>DIFFICULTY LEVEL</label>
+                <select id="difficulty">
+                    <option value="easy">Beginner</option>
+                    <option value="medium">Advanced</option>
+                    <option value="hard">Expert</option>
+                </select>
+            </div>
+
+            <div>
+                <label>DISASTER SCENARIO</label>
+                <select id="scenario">
+                    <option value="flood">River Flood</option>
+                    <option value="coastal">Coastal Flood</option>
+                    <option value="urban">Urban Flood</option>
+                    <option value="agri">Agricultural Flood</option>
+                </select>
+            </div>
+        </div>
+
+        <p id="brief" class="brief">
+            Identify potential river inundation and coordinate rescue operations.
+        </p>
+
+        <button id="startBtn" class="primary-btn">
+            LAUNCH MISSION →
+        </button>
+    </section>
+
+    <section class="game-layout">
+
+        <div class="panel radar-panel">
+            <div class="section-heading">
+                <span>02</span>
+                <h3>SAR Observation Grid</h3>
+            </div>
+
+            <p class="subtext">
+                Select a radar sector to inspect its simulated VV backscatter.
+            </p>
+
+            <div class="map-label">
+                <span>AOI-07 / OBSERVATION AREA</span>
+                <span>6 × 6 GRID</span>
+            </div>
+
+            <div id="radarGrid" class="radar-grid"></div>
+
+            <div class="legend">
+                <span><i class="legend-box unknown"></i> Unclassified</span>
+                <span><i class="legend-box flood"></i> Flood</span>
+                <span><i class="legend-box safe"></i> Safe</span>
+            </div>
+
+            <div class="progress-area">
+                <div class="progress-info">
+                    <span>Mission Progress</span>
+                    <span id="progressText">0%</span>
+                </div>
+                <div class="progress-track">
+                    <div id="progressBar"></div>
+                </div>
+            </div>
+        </div>
+
+        <div class="right-column">
+
+            <div class="panel analysis-panel">
+                <div class="section-heading">
+                    <span>03</span>
+                    <h3>Radar Analysis</h3>
+                </div>
+
+                <div class="sector-display">
+                    <p>SELECTED SECTOR</p>
+                    <h2 id="sectorName">NO SECTOR</h2>
+                </div>
+
+                <div class="backscatter">
+                    <p>VV BACKSCATTER</p>
+                    <h2 id="dbValue">-- <small>dB</small></h2>
+                    <p id="interpretation">Awaiting observation...</p>
+                </div>
+
+                <div class="decision-buttons">
+                    <button id="floodBtn" class="flood-btn" disabled>
+                        FLOODED
+                    </button>
+                    <button id="safeBtn" class="safe-btn" disabled>
+                        SAFE
+                    </button>
+                </div>
+            </div>
+
+            <div class="panel rescue-panel">
+                <div class="section-heading">
+                    <span>04</span>
+                    <h3>Rescue Command</h3>
+                </div>
+
+                <p id="rescueTarget" class="brief">
+                    No rescue target selected.
+                </p>
+
+                <button id="deployBtn" class="primary-btn" disabled>
+                    DEPLOY RESCUE UNIT
+                </button>
+
+                <p id="rescueFeedback" class="subtext">
+                    Correctly identify a flood sector to unlock deployment.
+                </p>
+            </div>
+
+        </div>
+    </section>
+
+    <section class="panel intelligence-panel">
+        <div class="section-heading">
+            <span>05</span>
+            <h3>Mission Intelligence</h3>
+        </div>
+
+        <div id="message" class="message">
+            Mission ready. Configure your settings and launch.
+        </div>
+
+        <div class="performance-grid">
+            <div><h3 id="correct">0</h3><p>Correct Decisions</p></div>
+            <div><h3 id="wrong">0</h3><p>Errors</p></div>
+            <div><h3 id="rescued">0</h3><p>Rescue Operations</p></div>
+        </div>
+    </section>
+
+    <section class="panel achievements-panel">
+        <div class="section-heading">
+            <span>06</span>
+            <h3>Mission Achievements</h3>
+        </div>
+
+        <div class="achievement-grid">
+            <div class="achievement" id="badge1">🔒 <b>First Contact</b><p>Classify a sector</p></div>
+            <div class="achievement" id="badge2">🔒 <b>Radar Expert</b><p>10 correct decisions</p></div>
+            <div class="achievement" id="badge3">🔒 <b>Rescue Hero</b><p>3 rescue operations</p></div>
+            <div class="achievement" id="badge4">🔒 <b>Perfect Analyst</b><p>Complete without errors</p></div>
+            <div class="achievement" id="badge5">🔒 <b>Earth Guardian</b><p>Complete a mission</p></div>
+            <div class="achievement" id="badge6">🔒 <b>Master Intelligence</b><p>1500 EIP score</p></div>
+        </div>
+    </section>
+
+    <section class="panel leaderboard-panel">
+        <div class="section-heading">
+            <span>07</span>
+            <h3>Session Leaderboard</h3>
+        </div>
+        <div id="leaderboard">
+            <p class="subtext">Complete a mission to enter the leaderboard.</p>
+        </div>
+    </section>
+
+    <section id="results" class="panel results-panel hidden">
+        <p class="eyebrow">MISSION DEBRIEF</p>
+        <h2 id="resultTitle">MISSION COMPLETE</h2>
+        <h1 id="finalScore">0 EIP</h1>
+        <p id="resultText"></p>
+        <div id="resultStats"></div>
+        <button id="againBtn" class="primary-btn">NEW MISSION ↻</button>
+    </section>
+
+    <footer>
+        <h3>BRAHMAND EarthPulse</h3>
+        <p>AI-Powered Earth Surface Monitoring System</p>
+        <p class="disclaimer">
+            Educational simulation only. All radar readings and disaster
+            scenarios are generated for gameplay and are not actual NISAR
+            observations or emergency information.
+        </p>
+    </footer>
+
+</main>
+
+<script src="script.js"></script>
+</body>
+</html>
